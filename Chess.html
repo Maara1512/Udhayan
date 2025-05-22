@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en" style="--neon-glow: #00ffff; --tile-light: #ffffff; --tile-dark: #000000;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Advanced AI Chess - Neon 3D Moon &amp; Star Night Background</title>
+
+    <style>
+        :root {
+            --tile-light: #ffffff;
+            --tile-dark: #000000;
+            --tile-light-glow: #330000;
+            --tile-dark-glow: #000011;
+            --highlight-color: #00ffaa;
+            --border-color: #00ffaa;
+            --piece-shadow: rgba(0, 255, 170, 0.8);
+            --neon-glow: #00ffff;
+            --board-shadow: #00ffff55;
+            --check-highlight: #ff3333;
+            --checkmate-highlight: #ff0000cc;
+        }
+
+        /* Reset and base */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            background-size: 1200% 1200%;
+            animation: none;
+            color: #0ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+            overflow-x: hidden;
+            perspective: 1200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        /* Background container behind all */
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 150vh;
+            overflow: hidden;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, #000011 0%, #000000 80%);
+            filter: drop-shadow(0 0 10px #00ffffaa);
+        }
+
+        /* Stars container */
+        #stars {
+            position: fixed;
+            width: 250%;
+            height: 250%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            overflow: visible;
+            filter: drop-shadow(0 0 2px #00ffff);
+        }
+
+        /* Star base style */
+        .star {
+            position: fixed;
+            background: #00ffff;
+            border-radius: 100%;
+            opacity: 0.8;
+            animation-name: starTwinkle;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Neon 3D Moon */
+        #moon {
+            position: absolute;
+            top: 15vh;
+            right: 10vw;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #00ffffcc 15%, transparent 70%), radial-gradient(circle at 60% 60%, #00ccccbb 25%, transparent 80%), radial-gradient(circle at 30% 70%, #009999bb 20%, transparent 75%), radial-gradient(circle at 65% 25%, #00ffffdd 22%, transparent 75%), radial-gradient(circle at center, #001f27, #000000);
+            box-shadow: 0 0 25px 5px #00ffffaa, inset 0 0 40px 10px #00ffff55, 0 0 50px 15px #00ffff88;
+            filter: drop-shadow(0 0 15px #00ffffaa);
+            animation: moonGlowPulse 4s ease-in-out infinite;
+            transform-style: preserve-3d;
+            user-select: none;
+        }
+
+            /* Subtle crater overlays for moon 3D effect */
+            #moon::before, #moon::after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+                background: radial-gradient(circle, #004d66cc 40%, transparent 80%);
+                pointer-events: none;
+                filter: drop-shadow(0 0 8px #00ffff66);
+            }
+
+            #moon::before {
+                width: 50px;
+                height: 50px;
+                top: 30px;
+                left: 45px;
+                box-shadow: 0 0 10px 3px #00ffffaa;
+                transform: translateZ(10px);
+            }
+
+            #moon::after {
+                width: 30px;
+                height: 30px;
+                top: 90px;
+                left: 90px;
+                filter: drop-shadow(0 0 6px #00cccc99);
+                transform: translateZ(5px);
+            }
+
+        @keyframes moonGlowPulse {
+            0%, 100% {
+                box-shadow: 0 0 25px 5px #00ffffaa, inset 0 0 40px 10px #00ffff55, 0 0 50px 15px #00ffff88;
+                filter: drop-shadow(0 0 15px #00ffffaa);
+            }
+
+            50% {
+                box-shadow: 0 0 35px 10px #00ffffff, inset 0 0 60px 15px #00ffff88, 0 0 70px 20px #00ffffff;
+                filter: drop-shadow(0 0 25px #00ffffee);
+            }
+        }
+
+        /* Reset and base - existing chess and container styles */
+
+        h1 {
+            margin-top: 26px;
+            margin-bottom: 4px;
+            font-weight: 800;
+            font-size: 3rem;
+            text-align: center;
+            text-shadow: 0 0 8px #ff0044, 0 0 20px #440011, 0 0 30px #110008, 0 0 40px var(--neon-glow), 0 0 70px var(--neon-glow);
+            position: relative;
+            z-index: 1;
+        }
+
+        #container {
+            display: flex;
+            gap: 32px;
+            margin: 20px 60px 50px;
+            flex-wrap: nowrap;
+            justify-content: center;
+            max-width: 1600px;
+            position: relative;
+            top: 20px;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Adjust container to be centered in HD screens */
+        @media (max-width: 1700px) {
+            #container {
+                flex-wrap: wrap;
+                margin: 20px 40px 50px;
+            }
+        }
+
+        #board {
+            width: 500px;
+            height:500px;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            border: 4px solid var(--border-color);
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--tile-light-glow), var(--tile-dark-glow));
+            box-shadow: inset 0 0 40px var(--board-shadow), 0 0 48px var(--board-shadow), 0 40px 50px -30px rgba(0, 255, 255, 0.6);
+            transition: box-shadow 0.5s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* New 360-degree Y-axis rotation animation */
+        @keyframes boardRotate360 {
+            from {
+                transform: rotateY(0deg);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        /* Add animation when rotated continuous */
+        #board.rotated {
+            animation-name: boardRotate360;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            /* animation-duration will be set dynamically */
+        }
+
+        .tile {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            box-sizing: border-box;
+            border-radius: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.4s ease;
+            user-select: none;
+        }
+
+            .tile.light {
+                background-color: var(--tile-light);
+                box-shadow: inset 0 0 12px #ffffffaa, 0 0 14px #008888cc;
+            }
+
+            .tile.dark {
+                background-color: var(--tile-dark);
+                box-shadow: inset 0 0 20px #000000cc, 0 0 18px #003333cc;
+            }
+
+            .tile.highlight-move {
+                box-shadow: 0 0 18px 4px var(--highlight-color), inset 0 0 14px 4px var(--highlight-color);
+                background-color: #002f2c !important;
+            }
+
+            .tile.highlight-select {
+                box-shadow: 0 0 30px 8px #0099ff, inset 0 0 20px 8px #0099ff;
+                background-color: #001820 !important;
+            }
+
+            .tile.highlight-check {
+                box-shadow: 0 0 30px 8px var(--check-highlight), inset 0 0 20px 8px var(--check-highlight);
+                background-color: #330000 !important;
+            }
+
+            .tile.highlight-checkmate {
+                box-shadow: 0 0 36px 10px var(--checkmate-highlight), inset 0 0 28px 10px var(--checkmate-highlight);
+                background-color: #440000 !important;
+            }
+
+        /* Neon 3D piece styles */
+        .piece {
+            pointer-events: none;
+            position: relative;
+            color: var(--neon-glow);
+            text-shadow: 0 0 6px var(--neon-glow), 0 0 12px var(--neon-glow), 0 0 18px var(--neon-glow), 0 0 24px var(--neon-glow), 0 0 36px var(--neon-glow);
+            user-select: none;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            filter: drop-shadow(0 0 10px var(--neon-glow));
+            line-height: 1;
+        }
+
+            .piece.dragging {
+                opacity: 0.9;
+                transform: scale(1.3) translateZ(60px);
+                z-index: 9999;
+                filter: drop-shadow(0 0 15px var(--neon-glow));
+            }
+
+            .piece::after {
+                content: attr(data-shadow);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) translateZ(-20px) scale(1);
+                filter: blur(6px);
+                color: #ff0044;
+                opacity: 0.25;
+                z-index: -1;
+            }
+
+        /* Animate AI thinking - blinking neon */
+        .thinking {
+            animation: neonBlink 1.4s infinite;
+        }
+
+        @keyframes neonBlink {
+            0%, 100% {
+                color: var(--neon-glow);
+                text-shadow: 0 0 20px var(--neon-glow);
+            }
+
+            50% {
+                color: #009999;
+                text-shadow: 0 0 35px #009999;
+            }
+        }
+
+        /* Settings panel with neon glow */
+        #settings {
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 8px;
+            border-radius: 24px;
+            box-shadow: 0 0 50px #00ffffcc, inset 0 0 40px #008888cc;
+            color: #0ff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            min-width: 320px;
+        }
+
+            #settings h2 {
+                margin: 0 0 16px 0;
+                font-weight: 700;
+                font-size: 1.4rem;
+                border-bottom: 1px solid #009999cc;
+                padding-bottom: 6px;
+                text-shadow: 0 0 14px #0ff, 0 0 20px #08ffff;
+            }
+
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: 600;
+            white-space: normal;
+            line-height: 1.2;
+            word-wrap: break-word;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        select, input[type="color"], input[type="range"], button {
+            width: 100%;
+            max-width: 80px;
+            padding: 4px 4px;
+            font-size: 1rem;
+            background: #003344;
+            border: 1.5px solid #00cccc;
+            border-radius: 12px;
+            color: #0ff;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease, box-shadow 0.4s ease;
+            text-shadow: 0 0 6px #00ffff;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+            select:hover, button:hover, input[type="color"]:hover {
+                background: #005577;
+                box-shadow: 0 0 25px #0ff, 0 0 35px #0ff;
+            }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #00ffff 0%, #002222 100%);
+            height: 12px;
+            border-radius: 12px;
+            margin-top: 4px;
+        }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: #00ffff;
+                cursor: pointer;
+                box-shadow: 0 0 12px #00ffff;
+                transition: 0.3s ease;
+                margin-top: -6px;
+            }
+
+            input[type="range"]:-moz-range-thumb {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: #00ffff;
+                cursor: pointer;
+                box-shadow: 0 0 12px #00ffff;
+                transition: 0.3s ease;
+            }
+
+        #status {
+            margin-top: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            min-height: 32px;
+            color: #00ffffcc;
+            text-shadow: 0 0 18px #00ffffaa, 0 0 28px #00ffffcc;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Toggle switches for settings */
+        .toggle-group {
+            margin-top: 10px;
+        }
+
+            .toggle-group label {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 1rem;
+                white-space: normal;
+                line-height: 1.2;
+            }
+
+            .toggle-group input[type=checkbox] {
+                width: 40px;
+                height: 20px;
+                position: relative;
+                -webkit-appearance: none;
+                background: #004d66;
+                outline: none;
+                border-radius: 12px;
+                box-shadow: inset 0 0 8px #002222;
+                transition: background 0.3s;
+                cursor: pointer;
+            }
+
+                .toggle-group input[type=checkbox]:disabled {
+                    background: #00ffff;
+                    box-shadow: 0 0 15px #0ff, inset 0 0 20px #0ff;
+                }
+
+                .toggle-group input[type=checkbox]::after {
+                    content: '';
+                    position: absolute;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    top: -1px;
+                    left: -1px;
+                    background: #001f27;
+                    box-shadow: 0 0 12px #004d66;
+                    transition: 0.3s;
+                }
+
+                .toggle-group input[type=checkbox]:checked::after {
+                    left: 19px;
+                    background: #00ffffdd;
+                    box-shadow: 0 0 25px #0ff;
+                }
+
+        /* Label for rotation speed with value display */
+        #rotationSpeedLabel {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            user-select: none;
+            color: #0ff;
+            text-shadow: 0 0 6px #00ffff;
+            display: flex;
+            justify-content: space-between;
+            max-width: 220px;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 1200px) {
+            #container {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+                margin: 20px 20px 50px;
+            }
+
+            #board {
+                width: 60vw;
+                height: 60vw;
+                max-width: 500px;
+                max-height: 500px;
+            }
+
+            #settings {
+                max-width: 90vw;
+                min-width: auto;
+                margin: 0 auto;
+            }
+        }
+    </style>
+
+</head>
+<body class="theme-neon-3d">
+
+    <div id="background" aria-hidden="true">
+        <div id="stars" aria-hidden="true"></div>
+        <div id="moon" aria-hidden="true"></div>
+    </div>
+
+    <h1>3D Neon Chess</h1>
+    <div id="container">
+        <div id="board" aria-label="Chess board" role="grid" tabindex="0" class="rotated" style="animation-duration: 6s;">
+            <!-- Board tiles and pieces inserted by JS -->
+        </div>
+
+        <section id="settings" aria-label="Game settings">
+            <h2>Settings &amp; Controls</h2>
+
+            <label for="aiLevel">AI Difficulty Level (1 to 10):</label>
+            <select id="aiLevel" aria-describedby="aiLevelDesc" title="Choose AI skill level">
+                <option value="1">1 (Very Easy)</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5" selected="">5 (Medium)</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10 (Very Hard)</option>
+            </select>
+
+            <label for="lightTileColor">Light Tile Color:</label>
+            <input type="color" id="lightTileColor" value="#bf9a13" title="Select light tile color">
+
+            <label for="darkTileColor">Dark Tile Color:</label>
+            <input type="color" id="darkTileColor" value="#000000" title="Select dark tile color">
+
+            <label for="neonColor">Neon Glow Color:</label>
+            <input type="color" id="neonColor" value="#00ffff" title="Select neon glow color" style="margin-top: 8px; display: block;">
+
+            <label for="themeSelect">Piece Design Theme:</label>
+            <select id="themeSelect" aria-describedby="themeSelectDesc" title="Change the piece style">
+                <option value="neon-3d" selected="">Neon 3D Glow</option>
+                <option value="classic">Classic Unicode</option>
+                <option value="modern">Modern Minimal</option>
+            </select>
+
+            <label for="neonThemeSelect">Neon Theme:</label>
+            <select id="neonThemeSelect" style="width: 50%; max-width: 50px;">
+                <option value="cyan">Cyan</option>
+                <option value="pink">Pink</option>
+                <option value="green">Green</option>
+                <option value="yellow">Yellow</option>
+            </select>
+
+            <label id="rotationSpeedLabel" for="rotationSpeed">Board Rotation Speed: <span id="rotationSpeedValue">1.0</span></label>
+            <input type="range" id="rotationSpeed" min="0.1" max="3" step="0.1" value="0.5">
+
+            <div class="toggle-group">
+                <label for="toggleAnimation">
+                    Enable Piece Move Animations
+                    <input type="checkbox" id="toggleAnimation">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="toggleSound">
+                    Enable Sound Effects
+                    <input type="checkbox" id="toggleSound">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="toggleNeonGlow">
+                    Toggle Neon Glow
+                    <input type="checkbox" id="toggleNeonGlow" title="Enable or disable neon glow effects">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="toggleHighlightMoves">
+                    Show Valid Move Highlights
+                    <input type="checkbox" id="toggleHighlightMoves">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="toggleBoardRotation">
+                    Enable 3D Board Rotation
+                    <input type="checkbox" id="toggleBoardRotation">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="togglePieceShadow">
+                    Enable Piece Shadow
+                    <input type="checkbox" id="togglePieceShadow">
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <label for="toggleAI">
+                    Play Against AI
+                    <input type="checkbox" id="toggleAI">
+                </label>
+            </div>
+
+            <!-- Changed from select to range input for board size -->
+            <label id="boardSizeLabel" for="boardSize">Board Size: <span id="boardSizeValue">800px</span></label>
+            <input type="range" id="boardSize" min="250" max="500" step="20" value="500" title="Adjust board size">
+
+            <button id="newGameBtn" aria-label="Start a new chess game" title="Restart the game">New Game</button>
+            <div id="status" role="status" aria-live="polite">White's turn</div>
+        </section>
+    </div>
+
+    <script>
+        // Star creation and twinkle animation setup
+        const starsContainer = document.getElementById('stars');
+
+        // Generate 3000 stars of varying sizes and flicker timings spaced randomly
+        function createStars() {
+            const numStars = 3000;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                // Random size between 1, 2, 3, 4, 5 px
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+
+                // Random position anywhere across viewport
+                star.style.top = (Math.random() * 145) + 'vh';
+                star.style.left = (Math.random() * 120) + 'vw';
+
+                // Random animation delay and duration for flicker
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                star.style.animationDelay = (Math.random() * 5) + 's';
+
+                // Variable opacity for color intensity
+                const opacity = 0.2 + Math.random() * 0.8;
+                star.style.opacity = opacity;
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        // The rest of the original chess functions and variables remain unchanged
+
+        // Begin original script content for chess game and settings:
+
+        const boardEl = document.getElementById('board');
+        const statusEl = document.getElementById('status');
+
+        const aiLevelSelect = document.getElementById('aiLevel');
+        const themeSelect = document.getElementById('themeSelect');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const neonColorPicker = document.getElementById('neonColor');
+        const neonThemeSelect = document.getElementById('neonThemeSelect');
+        const lightTileColorPicker = document.getElementById('lightTileColor');
+        const darkTileColorPicker = document.getElementById('darkTileColor');
+        const rotationSpeedRange = document.getElementById('rotationSpeed');
+        const rotationSpeedValue = document.getElementById('rotationSpeedValue');
+
+        // Updated board size elements (range input)
+        const boardSizeRange = document.getElementById('boardSize');
+        const boardSizeValue = document.getElementById('boardSizeValue');
+
+        const toggleAnimation = document.getElementById('toggleAnimation');
+        const toggleSound = document.getElementById('toggleSound');
+        const toggleNeonGlow = document.getElementById('toggleNeonGlow');
+        const toggleHighlightMoves = document.getElementById('toggleHighlightMoves');
+        const toggleBoardRotation = document.getElementById('toggleBoardRotation');
+        const togglePieceShadow = document.getElementById('togglePieceShadow');
+        const toggleAI = document.getElementById('toggleAI');
+
+        const neonThemes = {
+            cyan: '#00ffff',
+            pink: '#ff00ff',
+            green: '#00ff00',
+            yellow: '#ffff00'
+        };
+
+        const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+        let game = null;
+        let selected = null;
+        let validMoves = [];
+        let aiThinking = false;
+        let animationOn = toggleAnimation.checked;
+        let soundEnabled = toggleSound.checked;
+        let neonGlowOn = toggleNeonGlow.checked;
+        let highlightMovesOn = toggleHighlightMoves.checked;
+        let rotateBoardOn = toggleBoardRotation.checked;
+        let pieceShadowOn = togglePieceShadow.checked;
+        let playAgainstAI = toggleAI.checked;
+
+        let checkKingPos = null;
+        let checkmate = false;
+
+        // Update neon glow CSS variable and intensity based on glow factor (0 to 1)
+        function updateNeonGlowColor(color, glowFactor = 1) {
+            // Calculate adjusted color by reducing brightness at low glowFactor
+            // We'll adjust textShadow and filter opacity to simulate low glow
+            document.documentElement.style.setProperty('--neon-glow', color);
+            document.querySelectorAll('.piece').forEach(p => {
+                if (neonGlowOn) {
+                    const baseColor = color.trim();
+                    const shadowOpacity = glowFactor;
+                    const textShadow = [
+                        `0 0 6px ${baseColor}`,
+                        `0 0 12px ${baseColor}`,
+                        `0 0 18px ${baseColor}`,
+                        `0 0 24px ${baseColor}`,
+                        `0 0 36px ${baseColor}`
+                    ].join(',');
+                    p.style.textShadow = textShadow;
+                    const filterGlow = pieceShadowOn ? `drop-shadow(0 0 ${10 * glowFactor}px ${baseColor})` : 'none';
+                    p.style.filter = filterGlow;
+                    // Adjust color opacity for low glow (approximate)
+                    if (glowFactor < 0.25) {
+                        p.style.color = '#555'; // dimmer color
+                    } else {
+                        p.style.color = baseColor;
+                    }
+                } else {
+                    p.style.textShadow = 'none';
+                    p.style.filter = 'none';
+                    p.style.color = (isWhite(p.textContent) ? '#eee' : '#222');
+                }
+            });
+        }
+
+        function isWhite(symbol) {
+            return symbol && symbol.toUpperCase() === symbol && symbol.toLowerCase() !== symbol;
+        }
+
+        // Listen to neon theme select changes
+        neonThemeSelect.addEventListener('change', e => {
+            const color = neonThemes[e.target.value];
+            neonColorPicker.value = pink;
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        neonColorPicker.addEventListener('input', e => {
+            neonThemeSelect.value = pink;
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        lightTileColorPicker.addEventListener('input', e => {
+            document.documentElement.style.setProperty('--tile-light', e.target.value);
+            renderBoard();
+        });
+
+        darkTileColorPicker.addEventListener('input', e => {
+            document.documentElement.style.setProperty('--tile-dark', e.target.value);
+            renderBoard();
+        });
+
+        toggleAnimation.addEventListener('change', e => {
+            animationOn = e.target.checked;
+            renderBoard();
+        });
+
+        toggleSound.addEventListener('change', e => {
+            soundEnabled = e.target.checked;
+        });
+
+        toggleNeonGlow.addEventListener('change', e => {
+            neonGlowOn = e.target.checked;
+            updateNeonGlowBasedOnAILevel();
+            renderBoard();
+        });
+
+        toggleHighlightMoves.addEventListener('change', e => {
+            highlightMovesOn = e.target.checked;
+            renderBoard();
+        });
+
+        toggleBoardRotation.addEventListener('change', e => {
+            rotateBoardOn = e.target.checked;
+            applyBoardRotationAnimation();
+        });
+
+        togglePieceShadow.addEventListener('change', e => {
+            pieceShadowOn = e.target.checked;
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        toggleAI.addEventListener('change', e => {
+            playAgainstAI = e.target.checked;
+            if (game.whiteTurn === false && playAgainstAI && !game.gameOver && !aiThinking) {
+                aiTurn();
+            }
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        // Removed previous boardSizeSelect event listener
+        // Added new boardSizeRange event listener for slider changes
+        boardSizeRange.addEventListener('input', e => {
+            const sizePx = e.target.value;
+            boardEl.style.width = sizePx + 'px';
+            boardEl.style.height = sizePx + 'px';
+            boardSizeValue.textContent = sizePx + 'px';
+        });
+
+        rotationSpeedRange.addEventListener('input', e => {
+            const speed = parseFloat(e.target.value);
+            rotationSpeedValue.textContent = speed.toFixed(1);
+            applyBoardRotationAnimation();
+        });
+
+        themeSelect.addEventListener('change', e => {
+            renderBoard();
+        });
+
+        aiLevelSelect.addEventListener('change', () => {
+            if (!game.whiteTurn && playAgainstAI && !game.gameOver && !aiThinking)
+                aiTurn();
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        newGameBtn.addEventListener('click', () => {
+            startNewGame();
+            updateNeonGlowBasedOnAILevel();
+        });
+
+        // Chess Pieces unicode by theme
+        const pieceUnicode = {
+            classic: {
+                P: "♙", N: "♘", B: "♗", R: "♖", Q: "♕", K: "♔",
+                p: "♟", n: "♞", b: "♝", r: "♜", q: "♛", k: "♚"
+            },
+            modern: {
+                P: "♙", N: "♘", B: "♗", R: "♖", Q: "♕", K: "♔",
+                p: "♟", n: "♞", b: "♝", r: "♜", q: "♛", k: "♚"
+            },
+            "neon-3d": {
+                P: "♙", N: "♘", B: "♗", R: "♖", Q: "♕", K: "♔",
+                p: "♟", n: "♞", b: "♝", r: "♜", q: "♛", k: "♚"
+            }
+        };
+
+        // Initial FEN and helper functions for board conversion, move generation, evaluation, cloning, etc.
+        const startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+        function fenToBoard(fen) {
+            const rows = fen.split('/');
+            const b = [];
+            for (let r = 0; r < 8; r++) {
+                b[r] = [];
+                let cIndex = 0;
+                for (let ch of rows[r]) {
+                    if (/\d/.test(ch)) {
+                        let emptyCount = parseInt(ch, 10);
+                        for (let i = 0; i < emptyCount; i++) {
+                            b[r][cIndex++] = null;
+                        }
+                    } else {
+                        b[r][cIndex++] = ch;
+                    }
+                }
+            }
+            return b;
+        }
+
+        function boardToFen(board) {
+            let fen = '';
+            for (let r = 0; r < 8; r++) {
+                let emptyCount = 0;
+                for (let c = 0; c < 8; c++) {
+                    const p = board[r][c];
+                    if (p === null) emptyCount++;
+                    else {
+                        if (emptyCount > 0) {
+                            fen += emptyCount;
+                            emptyCount = 0;
+                        }
+                        fen += p;
+                    }
+                }
+                if (emptyCount > 0) fen += emptyCount;
+                if (r !== 7) fen += '/';
+            }
+            return fen;
+        }
+
+        class ChessGame {
+            constructor() {
+                this.board = fenToBoard(startFEN);
+                this.whiteTurn = true;
+                this.moveHistory = [];
+                this.gameOver = false;
+                this.winner = null;
+                this.castlingRights = {
+                    whiteKingSide: true,
+                    whiteQueenSide: true,
+                    blackKingSide: true,
+                    blackQueenSide: true,
+                };
+                this.enPassant = null;
+                this.halfMoveClock = 0;
+                this.fullMoveNumber = 1;
+            }
+            pieceAt(row, col) {
+                if (row < 0 || row > 7 || col < 0 || col > 7) return null;
+                return this.board[row][col];
+            }
+            isWhite(p) { return p && p.toUpperCase() === p; }
+            isBlack(p) { return p && p.toLowerCase() === p; }
+
+            allPossibleMoves(color) {
+                const moves = [];
+                for (let r = 0; r < 8; r++) {
+                    for (let c = 0; c < 8; c++) {
+                        let piece = this.board[r][c];
+                        if (!piece) continue;
+                        if (color === 'w' && !this.isWhite(piece)) continue;
+                        if (color === 'b' && !this.isBlack(piece)) continue;
+                        const pMoves = this.possibleMovesForPiece(r, c, piece);
+                        for (let m of pMoves) {
+                            moves.push({
+                                from: { r, c },
+                                to: m,
+                                piece,
+                            });
+                        }
+                    }
+                }
+                return moves;
+            }
+
+            possibleMovesForPiece(r, c, piece) {
+                const moves = [];
+                const directions = {
+                    N: [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]],
+                    B: [[-1, -1], [-1, 1], [1, -1], [1, 1]],
+                    R: [[-1, 0], [1, 0], [0, -1], [0, 1]],
+                    Q: [[-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]],
+                    K: [[-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]],
+                };
+                const isWhite = this.isWhite(piece);
+                const isBlack = this.isBlack(piece);
+                function onBoard(r, c) { return r >= 0 && r < 8 && c >= 0 && c < 8; }
+                switch (piece.toUpperCase()) {
+                    case 'P': {
+                        let dir = isWhite ? -1 : 1;
+                        if (onBoard(r + dir, c) && this.board[r + dir][c] === null) {
+                            moves.push({ r: r + dir, c });
+                            if ((isWhite && r === 6) || (isBlack && r === 1)) {
+                                if (this.board[r + 2 * dir][c] === null) moves.push({ r: r + 2 * dir, c });
+                            }
+                        }
+                        if (onBoard(r + dir, c - 1)) {
+                            const t = this.board[r + dir][c - 1];
+                            if ((isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) moves.push({ r: r + dir, c: c - 1 });
+                        }
+                        if (onBoard(r + dir, c + 1)) {
+                            const t = this.board[r + dir][c + 1];
+                            if ((isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) moves.push({ r: r + dir, c: c + 1 });
+                        }
+                        break;
+                    }
+                    case 'N': {
+                        for (let [dr, dc] of directions.N) {
+                            let tr = r + dr, tc = c + dc;
+                            if (onBoard(tr, tc)) {
+                                const t = this.board[tr][tc];
+                                if (t === null || (isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) {
+                                    moves.push({ r: tr, c: tc });
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case 'B': {
+                        for (let [dr, dc] of directions.B) {
+                            let tr = r + dr, tc = c + dc;
+                            while (onBoard(tr, tc)) {
+                                const t = this.board[tr][tc];
+                                if (t === null) {
+                                    moves.push({ r: tr, c: tc });
+                                } else {
+                                    if ((isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) {
+                                        moves.push({ r: tr, c: tc });
+                                    }
+                                    break;
+                                }
+                                tr += dr; tc += dc;
+                            }
+                        }
+                        break;
+                    }
+                    case 'R': {
+                        for (let [dr, dc] of directions.R) {
+                            let tr = r + dr, tc = c + dc;
+                            while (onBoard(tr, tc)) {
+                                const t = this.board[tr][tc];
+                                if (t === null) {
+                                    moves.push({ r: tr, c: tc });
+                                } else {
+                                    if ((isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) {
+                                        moves.push({ r: tr, c: tc });
+                                    }
+                                    break;
+                                }
+                                tr += dr; tc += dc;
+                            }
+                        }
+                        break;
+                    }
+                    case 'Q': {
+                        for (let [dr, dc] of directions.Q) {
+                            let tr = r + dr, tc = c + dc;
+                            while (onBoard(tr, tc)) {
+                                const t = this.board[tr][tc];
+                                if (t === null) {
+                                    moves.push({ r: tr, c: tc });
+                                } else {
+                                    if ((isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) {
+                                        moves.push({ r: tr, c: tc });
+                                    }
+                                    break;
+                                }
+                                tr += dr; tc += dc;
+                            }
+                        }
+                        break;
+                    }
+                    case 'K': {
+                        for (let [dr, dc] of directions.K) {
+                            let tr = r + dr, tc = c + dc;
+                            if (onBoard(tr, tc)) {
+                                const t = this.board[tr][tc];
+                                if (t === null || (isWhite && t && /^[a-z]$/.test(t)) || (isBlack && t && /^[A-Z]$/.test(t))) {
+                                    moves.push({ r: tr, c: tc });
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                return moves;
+            }
+
+            makeMove(move) {
+                const { from, to, piece } = move;
+                const newBoard = this.board.map(r => r.slice());
+                newBoard[to.r][to.c] = piece;
+                newBoard[from.r][from.c] = null;
+                if (piece === 'P' && to.r === 0) newBoard[to.r][to.c] = 'Q';
+                if (piece === 'p' && to.r === 7) newBoard[to.r][to.c] = 'q';
+                this.board = newBoard;
+                this.whiteTurn = !this.whiteTurn;
+                this.moveHistory.push(move);
+                const flatBoard = this.board.flat();
+                if (!flatBoard.includes('K')) {
+                    this.gameOver = true;
+                    this.winner = 'b';
+                } else if (!flatBoard.includes('k')) {
+                    this.gameOver = true;
+                    this.winner = 'w';
+                } else {
+                    this.winner = null;
+                }
+            }
+
+            findKing(color) {
+                for (let r = 0; r < 8; r++) {
+                    for (let c = 0; c < 8; c++) {
+                        const p = this.board[r][c];
+                        if (p !== null) {
+                            if (color === 'w' && p === 'K') return { r, c };
+                            if (color === 'b' && p === 'k') return { r, c };
+                        }
+                    }
+                }
+                return null;
+            }
+
+            isSquareAttacked(r, c, attackerColor) {
+                const opponentMoves = this.allPossibleMoves(attackerColor);
+                for (let move of opponentMoves) {
+                    if (move.to.r === r && move.to.c === c) return true;
+                }
+                return false;
+            }
+
+            inCheck(color) {
+                const kingPos = this.findKing(color);
+                if (!kingPos) return false; // King missing means game ended
+                const opponentColor = color === 'w' ? 'b' : 'w';
+                return this.isSquareAttacked(kingPos.r, kingPos.c, opponentColor);
+            }
+
+            inCheckmate(color) {
+                if (!this.inCheck(color)) return false;
+                const moves = this.allPossibleMoves(color);
+                for (let move of moves) {
+                    const clone = cloneGame(this);
+                    clone.makeMove(move);
+                    if (!clone.inCheck(color)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            inStalemate(color) {
+                if (this.inCheck(color)) return false;
+                const moves = this.allPossibleMoves(color);
+                return moves.length === 0;
+            }
+        }
+
+        function tileAt(r, c) {
+            return boardEl.children[r * 8 + c];
+        }
+
+        function renderBoard() {
+            Array.from(boardEl.children).forEach(t => {
+                t.classList.remove('highlight-move', 'highlight-select', 'highlight-check', 'highlight-checkmate');
+                t.innerHTML = '';
+            });
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const piece = game.board[r][c];
+                    if (piece) {
+                        const tile = tileAt(r, c);
+                        const span = document.createElement('span');
+                        span.className = 'piece';
+                        span.dataset.shadow = pieceUnicode[currentTheme()][piece];
+                        span.textContent = pieceUnicode[currentTheme()][piece];
+                        if (!neonGlowOn) {
+                            span.style.textShadow = 'none';
+                            span.style.filter = 'none';
+                            span.style.color = isWhite(piece) ? '#eee' : '#222';
+                        } else {
+                            const glowColor = getComputedStyle(document.documentElement).getPropertyValue('--neon-glow').trim() || '#00ffff';
+                            span.style.textShadow = `
+                                  0 0 6px ${glowColor},
+                                  0 0 12px ${glowColor},
+                                  0 0 18px ${glowColor},
+                                  0 0 24px ${glowColor},
+                                  0 0 36px ${glowColor}
+                                `;
+                            span.style.color = glowColor;
+                            span.style.filter = pieceShadowOn ? `drop-shadow(0 0 10px ${glowColor})` : 'none';
+                        }
+                        if (animationOn) {
+                            span.style.transition = 'transform 0.3s ease, text-shadow 0.3s ease';
+                        } else {
+                            span.style.transition = 'none';
+                        }
+                        tile.appendChild(span);
+                    }
+                }
+            }
+            if (selected) {
+                tileAt(selected.r, selected.c).classList.add('highlight-select');
+                if (highlightMovesOn) {
+                    for (let m of validMoves) {
+                        tileAt(m.r, m.c).classList.add('highlight-move');
+                    }
+                }
+            }
+
+            checkKingPos = null;
+            checkmate = false;
+            if (!game.gameOver) {
+                const currentColor = game.whiteTurn ? 'w' : 'b';
+                if (game.inCheck(currentColor)) {
+                    checkKingPos = game.findKing(currentColor);
+                    if (game.inCheckmate(currentColor)) {
+                        checkmate = true;
+                    }
+                }
+            }
+
+            if (checkKingPos) {
+                const tile = tileAt(checkKingPos.r, checkKingPos.c);
+                if (checkmate) {
+                    tile.classList.add('highlight-checkmate');
+                } else {
+                    tile.classList.add('highlight-check');
+                }
+            }
+        }
+
+        function onTileClick(r, c) {
+            if (aiThinking || game.gameOver) return;
+            const piece = game.board[r][c];
+            if (selected === null) {
+                if (piece && (game.whiteTurn === isWhite(piece))) {
+                    selected = { r, c };
+                    validMoves = game.possibleMovesForPiece(r, c, piece);
+                    validMoves = validMoves.filter(move => {
+                        const clone = cloneGame(game);
+                        clone.makeMove({ from: { r, c }, to: move, piece: piece });
+                        return !clone.inCheck(game.whiteTurn ? 'w' : 'b');
+                    });
+                    renderBoard();
+                }
+            } else {
+                const found = validMoves.find(m => m.r === r && m.c === c);
+                if (found) {
+                    game.makeMove({ from: selected, to: found, piece: game.board[selected.r][selected.c] });
+                    selected = null; validMoves = [];
+                    renderBoard();
+                    updateStatus();
+                    if (playAgainstAI && !game.gameOver && !game.whiteTurn) aiTurn();
+                } else {
+                    if (piece && (game.whiteTurn === isWhite(piece))) {
+                        selected = { r, c };
+                        validMoves = game.possibleMovesForPiece(r, c, piece);
+                        validMoves = validMoves.filter(move => {
+                            const clone = cloneGame(game);
+                            clone.makeMove({ from: { r, c }, to: move, piece: piece });
+                            return !clone.inCheck(game.whiteTurn ? 'w' : 'b');
+                        });
+                        renderBoard();
+                    } else {
+                        selected = null; validMoves = [];
+                        renderBoard();
+                    }
+                }
+            }
+        }
+
+        function aiSearchDepth(level) {
+            return Math.min(5, Math.max(1, Math.floor(level / 2)));
+        }
+
+        async function aiTurn() {
+            if (game.whiteTurn || game.gameOver || !playAgainstAI) return;
+            aiThinking = true;
+            statusEl.textContent = "AI is thinking...";
+            statusEl.classList.add("thinking");
+            await new Promise(r => setTimeout(r, 100));
+            const depth = aiSearchDepth(parseInt(aiLevelSelect.value));
+            const move = minimaxRoot(depth, game, false);
+            if (move) {
+                game.makeMove(move);
+                renderBoard();
+                updateStatus();
+            } else {
+                statusEl.textContent = "AI has no moves, game over.";
+                game.gameOver = true;
+            }
+            aiThinking = false;
+            statusEl.classList.remove("thinking");
+        }
+
+        function minimaxRoot(depth, gameState, isMaximizingPlayer) {
+            let bestMove = null;
+            let bestEval = isMaximizingPlayer ? -Infinity : Infinity;
+            const color = isMaximizingPlayer ? 'w' : 'b';
+            const moves = gameState.allPossibleMoves(color);
+            if (moves.length === 0) return null;
+            for (const move of moves) {
+                const newGame = cloneGame(gameState);
+                newGame.makeMove(move);
+                if (newGame.inCheck(color)) continue; // Avoid moves leaving king in check
+                const evalScore = minimax(newGame, depth - 1, -Infinity, Infinity, !isMaximizingPlayer);
+                if (isMaximizingPlayer) {
+                    if (evalScore > bestEval) {
+                        bestEval = evalScore;
+                        bestMove = move;
+                    }
+                } else {
+                    if (evalScore < bestEval) {
+                        bestEval = evalScore;
+                        bestMove = move;
+                    }
+                }
+            }
+            return bestMove;
+        }
+
+        function minimax(gameState, depth, alpha, beta, isMaximizingPlayer) {
+            if (depth === 0 || gameState.gameOver) {
+                return evaluateBoard(gameState);
+            }
+            const color = isMaximizingPlayer ? 'w' : 'b';
+            const moves = gameState.allPossibleMoves(color).filter(move => {
+                const clone = cloneGame(gameState);
+                clone.makeMove(move);
+                return !clone.inCheck(color);
+            });
+            if (moves.length === 0) {
+                if (gameState.inCheckmate(color)) {
+                    return isMaximizingPlayer ? -Infinity : Infinity;
+                }
+                if (gameState.inStalemate(color)) {
+                    return 0;
+                }
+                return 0;
+            }
+            if (isMaximizingPlayer) {
+                let maxEval = -Infinity;
+                for (let move of moves) {
+                    const newGame = cloneGame(gameState);
+                    newGame.makeMove(move);
+                    let evalScore = minimax(newGame, depth - 1, alpha, beta, false);
+                    maxEval = Math.max(maxEval, evalScore);
+                    alpha = Math.max(alpha, evalScore);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let move of moves) {
+                    const newGame = cloneGame(gameState);
+                    newGame.makeMove(move);
+                    let evalScore = minimax(newGame, depth - 1, alpha, beta, true);
+                    minEval = Math.min(minEval, evalScore);
+                    beta = Math.min(beta, evalScore);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
+        }
+
+        function evaluateBoard(gameState) {
+            if (gameState.gameOver) {
+                if (gameState.winner === 'w') return 10000;
+                if (gameState.winner === 'b') return -10000;
+                return 0;
+            }
+            let score = 0;
+            const weights = {
+                'P': 100, 'N': 320, 'B': 330, 'R': 500, 'Q': 900, 'K': 20000,
+                'p': -100, 'n': -320, 'b': -330, 'r': -500, 'q': -900, 'k': -20000
+            };
+            for (let row = 0; row < 8; row++)
+                for (let col = 0; col < 8; col++) {
+                    const p = gameState.board[row][col];
+                    if (p) score += weights[p] || 0;
+                }
+            return score;
+        }
+
+        function cloneGame(gameState) {
+            const clone = new ChessGame();
+            clone.board = gameState.board.map(r => r.slice());
+            clone.whiteTurn = gameState.whiteTurn;
+            clone.moveHistory = gameState.moveHistory.slice();
+            clone.gameOver = gameState.gameOver;
+            clone.winner = gameState.winner;
+            clone.castlingRights = { ...gameState.castlingRights };
+            clone.enPassant = gameState.enPassant;
+            clone.halfMoveClock = gameState.halfMoveClock;
+            clone.fullMoveNumber = gameState.fullMoveNumber;
+            return clone;
+        }
+
+        function updateStatus() {
+            if (game.gameOver) {
+                if (game.winner === 'w')
+                    statusEl.textContent = 'White wins! Game over.';
+                else if (game.winner === 'b')
+                    statusEl.textContent = 'Black wins! Game over.';
+                else
+                    statusEl.textContent = 'Draw! Game over.';
+            } else {
+                const currentColor = game.whiteTurn ? 'White' : 'Black';
+                if (game.inCheck(game.whiteTurn ? 'w' : 'b')) {
+                    if (game.inCheckmate(game.whiteTurn ? 'w' : 'b')) {
+                        statusEl.textContent = currentColor + ' is in checkmate! Game over.';
+                        game.gameOver = true;
+                    } else {
+                        statusEl.textContent = currentColor + ' is in check!';
+                    }
+                } else {
+                    statusEl.textContent = currentColor + "'s turn";
+                }
+            }
+        }
+
+        function startNewGame() {
+            game = new ChessGame();
+            selected = null;
+            validMoves = [];
+            renderBoard();
+            updateStatus();
+            applyBoardRotationAnimation();
+            updateNeonGlowBasedOnAILevel();
+            if (playAgainstAI && !game.whiteTurn) aiTurn();
+        }
+
+        function currentTheme() {
+            return themeSelect.value;
+        }
+
+        function createBoard() {
+            boardEl.innerHTML = '';
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const tile = document.createElement('div');
+                    tile.classList.add('tile');
+                    const lightSquare = (r + c) % 2 === 0;
+                    tile.classList.add(lightSquare ? 'light' : 'dark');
+                    tile.dataset.row = r;
+                    tile.dataset.col = c;
+                    tile.setAttribute('role', 'gridcell');
+                    tile.setAttribute('aria-label', files[c] + (8 - r));
+                    tile.addEventListener('click', () => onTileClick(r, c));
+                    boardEl.appendChild(tile);
+                }
+            }
+        }
+
+        // Apply 360 rotation animation to board with speed control and toggle
+        function applyBoardRotationAnimation() {
+            if (rotateBoardOn) {
+                const speed = parseFloat(rotationSpeedRange.value);
+                const duration = 6 / speed; // Duration inversely proportional to speed (6s at speed=1)
+                boardEl.classList.add('rotated');
+                boardEl.style.animationDuration = duration + 's';
+            } else {
+                boardEl.classList.remove('rotated');
+                boardEl.style.animationDuration = '';
+                // Reset transform to default
+                boardEl.style.transform = '';
+            }
+        }
+
+        // Glow default adjustment for low AI levels (glowFactor 0.1 to 1)
+        function updateNeonGlowBasedOnAILevel() {
+            if (!neonGlowOn) {
+                updateNeonGlowColor(neonColorPicker.value, 0);
+                return;
+            }
+            // Adjust glow intensity: low AI level means less glow; high means full glow
+            let aiLevel = parseInt(aiLevelSelect.value);
+            if (!playAgainstAI) {
+                // If not playing AI, use full glow
+                updateNeonGlowColor(neonColorPicker.value, 1);
+                return;
+            }
+            // Map aiLevel 1-10 to glowFactor 0.1-1.0 (linear)
+            let glowFactor = 0.1 + 0.9 * (aiLevel - 1) / 9;
+            updateNeonGlowColor(neonColorPicker.value, glowFactor);
+        }
+
+        // Initial setup
+        document.documentElement.style.setProperty('--neon-glow', neonColorPicker.value);
+        document.documentElement.style.setProperty('--tile-light', lightTileColorPicker.value);
+        document.documentElement.style.setProperty('--tile-dark', darkTileColorPicker.value);
+
+        boardSizeRange.dispatchEvent(new Event('input'));
+        rotationSpeedRange.dispatchEvent(new Event('input'));
+
+        createBoard();
+        updateNeonGlowBasedOnAILevel();
+        startNewGame();
+    </script>
+
+</body>
+</html>
+
